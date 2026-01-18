@@ -16,6 +16,9 @@ terraform/.terraform.lock.hcl
 terraform-projects/**/.terraform/
 terraform-projects/**/.terraform.lock.hcl
 terraform-projects/**/tfplan
+terraform-projects/**/terraform.tfstate
+terraform-projects/**/terraform.tfstate.*
+terraform-projects/**/.terraform.tfstate.lock.info
 
 .DS_Store
 *.pyc
