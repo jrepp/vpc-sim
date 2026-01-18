@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeClientVpnRoutesResponse><routes><item><clientVpnEndpointId>example</clientVpnEndpointId><destinationCidr>example</destinationCidr><targetSubnet>example</targetSubnet><type>example</type><origin>example</origin><status><code>creating</code><message>example</message></status><description>example</description></item></routes><nextToken>example</nextToken></DescribeClientVpnRoutesResponse>

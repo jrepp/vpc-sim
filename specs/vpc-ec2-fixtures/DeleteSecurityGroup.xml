@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DeleteSecurityGroupResponse><return>true</return><groupId>example</groupId></DeleteSecurityGroupResponse>

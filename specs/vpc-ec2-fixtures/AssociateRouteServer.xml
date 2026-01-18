@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<AssociateRouteServerResponse><routeServerAssociation><routeServerId>example</routeServerId><vpcId>example</vpcId><state>associating</state></routeServerAssociation></AssociateRouteServerResponse>

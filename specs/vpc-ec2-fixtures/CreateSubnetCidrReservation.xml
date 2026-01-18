@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CreateSubnetCidrReservationResponse><subnetCidrReservation><subnetCidrReservationId>example</subnetCidrReservationId><subnetId>example</subnetId><cidr>example</cidr><reservationType>prefix</reservationType><ownerId>example</ownerId><description>example</description><tagSet><item><key>example</key><value>example</value></item></tagSet></subnetCidrReservation></CreateSubnetCidrReservationResponse>

@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DeregisterTransitGatewayMulticastGroupMembersResponse><deregisteredMulticastGroupMembers><transitGatewayMulticastDomainId>example</transitGatewayMulticastDomainId><deregisteredNetworkInterfaceIds><item>example</item></deregisteredNetworkInterfaceIds><groupIpAddress>example</groupIpAddress></deregisteredMulticastGroupMembers></DeregisterTransitGatewayMulticastGroupMembersResponse>

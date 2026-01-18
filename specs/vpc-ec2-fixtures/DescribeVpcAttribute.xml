@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeVpcAttributeResponse><enableDnsHostnames><value>true</value></enableDnsHostnames><enableDnsSupport><value>true</value></enableDnsSupport><enableNetworkAddressUsageMetrics><value>true</value></enableNetworkAddressUsageMetrics><vpcId>example</vpcId></DescribeVpcAttributeResponse>

@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<GetTransitGatewayMulticastDomainAssociationsResponse><multicastDomainAssociations><item><transitGatewayAttachmentId>example</transitGatewayAttachmentId><resourceId>example</resourceId><resourceType>vpc</resourceType><resourceOwnerId>example</resourceOwnerId><subnet><subnetId>example</subnetId><state>pendingAcceptance</state></subnet></item></multicastDomainAssociations><nextToken>example</nextToken></GetTransitGatewayMulticastDomainAssociationsResponse>

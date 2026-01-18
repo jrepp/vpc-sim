@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeEgressOnlyInternetGatewaysResponse><egressOnlyInternetGatewaySet><item><attachmentSet><item><state>attaching</state><vpcId>example</vpcId></item></attachmentSet><egressOnlyInternetGatewayId>example</egressOnlyInternetGatewayId><tagSet><item><key>example</key><value>example</value></item></tagSet></item></egressOnlyInternetGatewaySet><nextToken>example</nextToken></DescribeEgressOnlyInternetGatewaysResponse>

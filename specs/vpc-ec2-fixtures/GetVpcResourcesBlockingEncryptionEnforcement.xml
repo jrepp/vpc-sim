@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<GetVpcResourcesBlockingEncryptionEnforcementResponse><nonCompliantResourceSet><item><id>example</id><type>example</type><description>example</description><isExcludable>true</isExcludable></item></nonCompliantResourceSet><nextToken>example</nextToken></GetVpcResourcesBlockingEncryptionEnforcementResponse>

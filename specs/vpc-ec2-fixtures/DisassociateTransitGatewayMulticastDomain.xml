@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DisassociateTransitGatewayMulticastDomainResponse><associations><transitGatewayMulticastDomainId>example</transitGatewayMulticastDomainId><transitGatewayAttachmentId>example</transitGatewayAttachmentId><resourceId>example</resourceId><resourceType>vpc</resourceType><resourceOwnerId>example</resourceOwnerId><subnets><item><subnetId>example</subnetId><state>pendingAcceptance</state></item></subnets></associations></DisassociateTransitGatewayMulticastDomainResponse>

@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<GetAssociatedIpv6PoolCidrsResponse><ipv6CidrAssociationSet><item><ipv6Cidr>example</ipv6Cidr><associatedResource>example</associatedResource></item></ipv6CidrAssociationSet><nextToken>example</nextToken></GetAssociatedIpv6PoolCidrsResponse>

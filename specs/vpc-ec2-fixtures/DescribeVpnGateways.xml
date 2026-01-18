@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeVpnGatewaysResponse><vpnGatewaySet><item><amazonSideAsn>1</amazonSideAsn><tagSet><item><key>example</key><value>example</value></item></tagSet><vpnGatewayId>example</vpnGatewayId><state>pending</state><type>ipsec.1</type><availabilityZone>example</availabilityZone><attachments><item><vpcId>example</vpcId><state>attaching</state></item></attachments></item></vpnGatewaySet></DescribeVpnGatewaysResponse>

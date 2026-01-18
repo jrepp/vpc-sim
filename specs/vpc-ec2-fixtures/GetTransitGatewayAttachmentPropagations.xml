@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<GetTransitGatewayAttachmentPropagationsResponse><transitGatewayAttachmentPropagations><item><transitGatewayRouteTableId>example</transitGatewayRouteTableId><state>enabling</state></item></transitGatewayAttachmentPropagations><nextToken>example</nextToken></GetTransitGatewayAttachmentPropagationsResponse>

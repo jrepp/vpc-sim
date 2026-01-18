@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeVpcClassicLinkDnsSupportResponse><nextToken>example</nextToken><vpcs><item><classicLinkDnsSupported>true</classicLinkDnsSupported><vpcId>example</vpcId></item></vpcs></DescribeVpcClassicLinkDnsSupportResponse>

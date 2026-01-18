@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CreateTransitGatewayRouteResponse><route><destinationCidrBlock>example</destinationCidrBlock><prefixListId>example</prefixListId><transitGatewayRouteTableAnnouncementId>example</transitGatewayRouteTableAnnouncementId><transitGatewayAttachments><item><resourceId>example</resourceId><transitGatewayAttachmentId>example</transitGatewayAttachmentId><resourceType>vpc</resourceType></item></transitGatewayAttachments><type>static</type><state>pending</state></route></CreateTransitGatewayRouteResponse>

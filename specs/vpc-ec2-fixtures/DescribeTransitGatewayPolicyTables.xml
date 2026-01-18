@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeTransitGatewayPolicyTablesResponse><transitGatewayPolicyTables><item><transitGatewayPolicyTableId>example</transitGatewayPolicyTableId><transitGatewayId>example</transitGatewayId><state>pending</state><creationTime>1970-01-01T00:00:00Z</creationTime><tagSet><item><key>example</key><value>example</value></item></tagSet></item></transitGatewayPolicyTables><nextToken>example</nextToken></DescribeTransitGatewayPolicyTablesResponse>

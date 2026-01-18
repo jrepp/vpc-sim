@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeVpcClassicLinkResponse><vpcSet><item><classicLinkEnabled>true</classicLinkEnabled><tagSet><item><key>example</key><value>example</value></item></tagSet><vpcId>example</vpcId></item></vpcSet></DescribeVpcClassicLinkResponse>

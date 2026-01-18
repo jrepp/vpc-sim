@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DisassociateSubnetCidrBlockResponse><ipv6CidrBlockAssociation><associationId>example</associationId><ipv6CidrBlock>example</ipv6CidrBlock><ipv6CidrBlockState><state>associating</state><statusMessage>example</statusMessage></ipv6CidrBlockState><ipv6AddressAttribute>public</ipv6AddressAttribute><ipSource>amazon</ipSource></ipv6CidrBlockAssociation><subnetId>example</subnetId></DisassociateSubnetCidrBlockResponse>

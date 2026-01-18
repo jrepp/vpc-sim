@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ModifyVpcEndpointServicePermissionsResponse><addedPrincipalSet><item><principalType>All</principalType><principal>example</principal><servicePermissionId>example</servicePermissionId><serviceId>example</serviceId></item></addedPrincipalSet><return>true</return></ModifyVpcEndpointServicePermissionsResponse>

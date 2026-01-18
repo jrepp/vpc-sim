@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<UnassignIpv6AddressesResponse><networkInterfaceId>example</networkInterfaceId><unassignedIpv6Addresses><item>example</item></unassignedIpv6Addresses><unassignedIpv6PrefixSet><item>example</item></unassignedIpv6PrefixSet></UnassignIpv6AddressesResponse>

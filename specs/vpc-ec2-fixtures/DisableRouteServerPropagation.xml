@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DisableRouteServerPropagationResponse><routeServerPropagation><routeServerId>example</routeServerId><routeTableId>example</routeTableId><state>pending</state></routeServerPropagation></DisableRouteServerPropagationResponse>

@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeVpcBlockPublicAccessOptionsResponse><vpcBlockPublicAccessOptions><awsAccountId>example</awsAccountId><awsRegion>example</awsRegion><state>default-state</state><internetGatewayBlockMode>off</internetGatewayBlockMode><reason>example</reason><lastUpdateTimestamp>1970-01-01T00:00:00Z</lastUpdateTimestamp><managedBy>account</managedBy><exclusionsAllowed>allowed</exclusionsAllowed></vpcBlockPublicAccessOptions></DescribeVpcBlockPublicAccessOptionsResponse>

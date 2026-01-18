@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeIpv6PoolsResponse><ipv6PoolSet><item><poolId>example</poolId><description>example</description><poolCidrBlockSet><item><poolCidrBlock>example</poolCidrBlock></item></poolCidrBlockSet><tagSet><item><key>example</key><value>example</value></item></tagSet></item></ipv6PoolSet><nextToken>example</nextToken></DescribeIpv6PoolsResponse>

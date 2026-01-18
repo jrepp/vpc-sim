@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CreateSecurityGroupResponse><groupId>example</groupId><tagSet><item><key>example</key><value>example</value></item></tagSet><securityGroupArn>example</securityGroupArn></CreateSecurityGroupResponse>

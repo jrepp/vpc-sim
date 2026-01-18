@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeSecurityGroupVpcAssociationsResponse><securityGroupVpcAssociationSet><item><groupId>example</groupId><vpcId>example</vpcId><vpcOwnerId>example</vpcOwnerId><state>associating</state><stateReason>example</stateReason><groupOwnerId>example</groupOwnerId></item></securityGroupVpcAssociationSet><nextToken>example</nextToken></DescribeSecurityGroupVpcAssociationsResponse>

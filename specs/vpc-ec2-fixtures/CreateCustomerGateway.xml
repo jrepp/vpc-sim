@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CreateCustomerGatewayResponse><customerGateway><certificateArn>example</certificateArn><deviceName>example</deviceName><tagSet><item><key>example</key><value>example</value></item></tagSet><bgpAsnExtended>example</bgpAsnExtended><customerGatewayId>example</customerGatewayId><state>example</state><type>example</type><ipAddress>example</ipAddress><bgpAsn>example</bgpAsn></customerGateway></CreateCustomerGatewayResponse>

@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<RegisterTransitGatewayMulticastGroupSourcesResponse><registeredMulticastGroupSources><transitGatewayMulticastDomainId>example</transitGatewayMulticastDomainId><registeredNetworkInterfaceIds><item>example</item></registeredNetworkInterfaceIds><groupIpAddress>example</groupIpAddress></registeredMulticastGroupSources></RegisterTransitGatewayMulticastGroupSourcesResponse>

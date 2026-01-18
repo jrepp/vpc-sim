@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeSecurityGroupReferencesResponse><securityGroupReferenceSet><item><groupId>example</groupId><referencingVpcId>example</referencingVpcId><vpcPeeringConnectionId>example</vpcPeeringConnectionId><transitGatewayId>example</transitGatewayId></item></securityGroupReferenceSet></DescribeSecurityGroupReferencesResponse>

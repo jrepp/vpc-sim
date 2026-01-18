@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<GetSecurityGroupsForVpcResponse><nextToken>example</nextToken><securityGroupForVpcSet><item><description>example</description><groupName>example</groupName><ownerId>example</ownerId><groupId>example</groupId><tagSet><item><key>example</key><value>example</value></item></tagSet><primaryVpcId>example</primaryVpcId></item></securityGroupForVpcSet></GetSecurityGroupsForVpcResponse>

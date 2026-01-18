@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CreateFlowLogsResponse><clientToken>example</clientToken><flowLogIdSet><item>example</item></flowLogIdSet><unsuccessful><item><error><code>example</code><message>example</message></error><resourceId>example</resourceId></item></unsuccessful></CreateFlowLogsResponse>

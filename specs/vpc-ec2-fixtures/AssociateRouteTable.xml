@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<AssociateRouteTableResponse><associationId>example</associationId><associationState><state>associating</state><statusMessage>example</statusMessage></associationState></AssociateRouteTableResponse>

@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<GetTransitGatewayRouteTablePropagationsResponse><transitGatewayRouteTablePropagations><item><transitGatewayAttachmentId>example</transitGatewayAttachmentId><resourceId>example</resourceId><resourceType>vpc</resourceType><state>enabling</state><transitGatewayRouteTableAnnouncementId>example</transitGatewayRouteTableAnnouncementId></item></transitGatewayRouteTablePropagations><nextToken>example</nextToken></GetTransitGatewayRouteTablePropagationsResponse>

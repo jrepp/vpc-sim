@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DisassociateTransitGatewayPolicyTableResponse><association><transitGatewayPolicyTableId>example</transitGatewayPolicyTableId><transitGatewayAttachmentId>example</transitGatewayAttachmentId><resourceId>example</resourceId><resourceType>vpc</resourceType><state>associating</state></association></DisassociateTransitGatewayPolicyTableResponse>

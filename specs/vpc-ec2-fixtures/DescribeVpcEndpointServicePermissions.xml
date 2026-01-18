@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeVpcEndpointServicePermissionsResponse><allowedPrincipals><item><principalType>All</principalType><principal>example</principal><servicePermissionId>example</servicePermissionId><tagSet><item><key>example</key><value>example</value></item></tagSet><serviceId>example</serviceId></item></allowedPrincipals><nextToken>example</nextToken></DescribeVpcEndpointServicePermissionsResponse>

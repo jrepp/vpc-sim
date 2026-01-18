@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeClassicLinkInstancesResponse><instancesSet><item><groupSet><item><groupId>example</groupId><groupName>example</groupName></item></groupSet><instanceId>example</instanceId><tagSet><item><key>example</key><value>example</value></item></tagSet><vpcId>example</vpcId></item></instancesSet><nextToken>example</nextToken></DescribeClassicLinkInstancesResponse>

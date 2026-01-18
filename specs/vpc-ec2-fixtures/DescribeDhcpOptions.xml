@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeDhcpOptionsResponse><nextToken>example</nextToken><dhcpOptionsSet><item><ownerId>example</ownerId><tagSet><item><key>example</key><value>example</value></item></tagSet><dhcpOptionsId>example</dhcpOptionsId><dhcpConfigurationSet><item><key>example</key><valueSet><item><value>example</value></item></valueSet></item></dhcpConfigurationSet></item></dhcpOptionsSet></DescribeDhcpOptionsResponse>

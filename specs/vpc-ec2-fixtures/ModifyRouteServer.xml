@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ModifyRouteServerResponse><routeServer><routeServerId>example</routeServerId><amazonSideAsn>1</amazonSideAsn><state>pending</state><tagSet><item><key>example</key><value>example</value></item></tagSet><persistRoutesState>enabling</persistRoutesState><persistRoutesDuration>1</persistRoutesDuration><snsNotificationsEnabled>true</snsNotificationsEnabled><snsTopicArn>example</snsTopicArn></routeServer></ModifyRouteServerResponse>

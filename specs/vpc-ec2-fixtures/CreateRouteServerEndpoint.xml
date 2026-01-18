@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<CreateRouteServerEndpointResponse><routeServerEndpoint><routeServerId>example</routeServerId><routeServerEndpointId>example</routeServerEndpointId><vpcId>example</vpcId><subnetId>example</subnetId><eniId>example</eniId><eniAddress>example</eniAddress><state>pending</state><failureReason>example</failureReason><tagSet><item><key>example</key><value>example</value></item></tagSet></routeServerEndpoint></CreateRouteServerEndpointResponse>

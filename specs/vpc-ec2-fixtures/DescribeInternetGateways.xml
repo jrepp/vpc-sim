@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DescribeInternetGatewaysResponse><internetGatewaySet><item><attachmentSet><item><state>attaching</state><vpcId>example</vpcId></item></attachmentSet><internetGatewayId>example</internetGatewayId><ownerId>example</ownerId><tagSet><item><key>example</key><value>example</value></item></tagSet></item></internetGatewaySet><nextToken>example</nextToken></DescribeInternetGatewaysResponse>

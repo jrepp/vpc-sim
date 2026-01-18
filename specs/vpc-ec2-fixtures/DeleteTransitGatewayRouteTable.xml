@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DeleteTransitGatewayRouteTableResponse><transitGatewayRouteTable><transitGatewayRouteTableId>example</transitGatewayRouteTableId><transitGatewayId>example</transitGatewayId><state>pending</state><defaultAssociationRouteTable>true</defaultAssociationRouteTable><defaultPropagationRouteTable>true</defaultPropagationRouteTable><creationTime>1970-01-01T00:00:00Z</creationTime><tagSet><item><key>example</key><value>example</value></item></tagSet></transitGatewayRouteTable></DeleteTransitGatewayRouteTableResponse>

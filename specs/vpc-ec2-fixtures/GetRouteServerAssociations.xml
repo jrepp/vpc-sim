@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<GetRouteServerAssociationsResponse><routeServerAssociationSet><item><routeServerId>example</routeServerId><vpcId>example</vpcId><state>associating</state></item></routeServerAssociationSet></GetRouteServerAssociationsResponse>
