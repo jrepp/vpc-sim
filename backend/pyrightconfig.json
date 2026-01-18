@@ -1,0 +1,15 @@
+{
+  "include": [
+    "app"
+  ],
+  "venvPath": ".",
+  "venv": ".venv",
+  "typeCheckingMode": "basic",
+  "exclude": [
+    "app/generated",
+    ".venv"
+  ],
+  "ignore": [
+    "**/.venv/**"
+  ]
+}

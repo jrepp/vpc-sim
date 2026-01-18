@@ -1,0 +1,9 @@
+[MASTER]
+ignore=app/generated
+
+[MESSAGES CONTROL]
+disable=
+    too-few-public-methods
+
+[FORMAT]
+max-line-length=120
