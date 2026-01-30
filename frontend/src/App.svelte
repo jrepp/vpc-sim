@@ -9,7 +9,9 @@
     subnets: [],
     route_tables: [],
     internet_gateways: [],
-    vpc_peerings: []
+    vpc_peerings: [],
+    dhcp_options: [],
+    security_groups: []
   };
   let loading = true;
   let error = "";
@@ -311,6 +313,9 @@
                 {#if vpc.ipv6_cidr_block}
                   <span class="muted">{vpc.ipv6_cidr_block}</span>
                 {/if}
+                {#if vpc.dhcp_options_id}
+                  <span class="muted">dhcp: {vpc.dhcp_options_id}</span>
+                {/if}
               </li>
             {/each}
           </ul>
@@ -381,6 +386,38 @@
               <span class="mono">{peering.id}</span>
               <span>{peering.requester_vpc_id} ↔ {peering.accepter_vpc_id}</span>
               <span class="muted">{peering.status}</span>
+            </li>
+          {/each}
+        </ul>
+      {/if}
+    </article>
+
+    <article class="card">
+      <h2>Security Groups</h2>
+      {#if state.security_groups.length === 0}
+        <p class="muted">No security groups yet.</p>
+      {:else}
+        <ul>
+          {#each state.security_groups as group}
+            <li>
+              <span class="mono">{group.id}</span>
+              <span>{group.name}</span>
+              <span class="muted">{group.rules.length} rules</span>
+            </li>
+          {/each}
+        </ul>
+      {/if}
+    </article>
+
+    <article class="card">
+      <h2>DHCP Options</h2>
+      {#if state.dhcp_options.length === 0}
+        <p class="muted">No DHCP options yet.</p>
+      {:else}
+        <ul>
+          {#each state.dhcp_options as options}
+            <li>
+              <span class="mono">{options.id}</span>
             </li>
           {/each}
         </ul>
