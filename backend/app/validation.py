@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from .db import SessionLocal
-from .models import Route, RouteTable, Subnet, Vpc, VpcPeeringConnection
+from .models import Route, RouteTable, RouteTableAssociation, Subnet, Vpc, VpcPeeringConnection
 from .serializers import route_summary
 
 router = APIRouter(prefix="/validate")
@@ -44,6 +44,15 @@ def _resolve_route_table(session: Session, subnet: Subnet | None) -> RouteTable 
     """Resolve the route table associated with a subnet."""
     if subnet and subnet.route_table_id:
         return session.get(RouteTable, subnet.route_table_id)
+    if subnet:
+        association = (
+            session.query(RouteTableAssociation)
+            .join(RouteTable)
+            .filter(RouteTable.vpc_id == subnet.vpc_id, RouteTableAssociation.main.is_(True))
+            .one_or_none()
+        )
+        if association:
+            return session.get(RouteTable, association.route_table_id)
     return None
 
 

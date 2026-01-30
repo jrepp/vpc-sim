@@ -24,7 +24,13 @@ def _param_present(params: Dict[str, str], name: str) -> bool:
     if name in params:
         return True
     prefix = f"{name}."
-    return any(key.startswith(prefix) for key in params)
+    if any(key.startswith(prefix) for key in params):
+        return True
+    name_lower = name.lower()
+    prefix_lower = f"{name_lower}."
+    return any(
+        key.lower() == name_lower or key.lower().startswith(prefix_lower) for key in params
+    )
 
 
 def _get_input_members(action: str) -> tuple[dict, dict] | None:
@@ -51,8 +57,9 @@ def validate_required_params(action: str, params: Dict[str, str]) -> List[str]:
     for name in shape.get("required", []):
         member = members.get(name, {})
         location = member.get("locationName", name)
-        if not _param_present(params, location):
-            missing.append(location)
+        if _param_present(params, location) or _param_present(params, name):
+            continue
+        missing.append(location)
     return missing
 
 
