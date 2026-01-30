@@ -63,6 +63,13 @@ frontend_port := "5179"
 	just lint
 	just lint-frontend
 
+@test:
+	just backend-dev-tools
+	cd {{backend_dir}} && .venv/bin/pytest -n auto -vv -ra -s --durations=15 --durations-min=0.1
+
+@test-backend:
+	just test
+
 @pre-commit-install:
 	just backend-dev-tools
 	{{backend_dir}}/.venv/bin/pre-commit install

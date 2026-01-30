@@ -1,3 +1,8 @@
+variable "name_prefix" {
+  type    = string
+  default = "test"
+}
+
 terraform {
   required_providers {
     aws = {
@@ -8,6 +13,12 @@ terraform {
 }
 
 provider "aws" {
+  default_tags {
+    tags = {
+      TestNamespace = var.name_prefix
+    }
+  }
+
   region                      = "us-east-1"
   access_key                  = "test"
   secret_key                  = "test"
