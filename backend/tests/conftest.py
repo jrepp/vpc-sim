@@ -5,10 +5,13 @@ import socket
 import subprocess
 import time
 import uuid
+from collections.abc import Generator
 from pathlib import Path
 
 import pytest
 import requests
+
+SimServerInfo = dict[str, str | int]
 
 def _free_port() -> int:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
@@ -17,7 +20,7 @@ def _free_port() -> int:
 
 
 @pytest.fixture(scope="session")
-def sim_server(tmp_path_factory: pytest.TempPathFactory) -> dict:
+def sim_server(tmp_path_factory: pytest.TempPathFactory) -> Generator[SimServerInfo, None, None]:
     port = _free_port()
     base_url = f"http://127.0.0.1:{port}"
     db_path = tmp_path_factory.mktemp("db") / "test.db"
@@ -65,12 +68,12 @@ def sim_server(tmp_path_factory: pytest.TempPathFactory) -> dict:
 
 
 @pytest.fixture(scope="session")
-def sim_container(sim_server: dict) -> dict:
+def sim_container(sim_server: SimServerInfo) -> SimServerInfo:
     return sim_server
 
 
 @pytest.fixture(scope="function")
-def sim_container_clean(sim_container: dict) -> dict:
+def sim_container_clean(sim_container: SimServerInfo) -> SimServerInfo:
     try:
         requests.post(f"{sim_container['base_url']}/state/reset", timeout=5)
     except requests.RequestException as exc:

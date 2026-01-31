@@ -36,7 +36,7 @@ router = APIRouter(prefix="/state")
 
 
 @router.get("")
-def get_state(tag: str | None = None) -> dict:
+def get_state(tag: str | None = None) -> dict:  # pylint: disable=too-many-locals
     """Return the current simulator state."""
     with SessionLocal() as session:
         tagged_ids: set[str] | None = None

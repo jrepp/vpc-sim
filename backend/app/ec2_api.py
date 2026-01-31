@@ -1,4 +1,5 @@
 """EC2 Query API handlers for the VPC simulator."""
+# pylint: disable=too-many-lines
 from __future__ import annotations
 
 import ipaddress
@@ -10,17 +11,12 @@ from xml.etree import ElementTree as ET
 
 from fastapi import APIRouter, Request, Response
 from pydantic import ValidationError
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from .db import SessionLocal
 from .ec2_query import get_input_shape_name, parse_action_input
 from .ec2_model import validate_params, validate_required_params
-EC2_SHAPES = None
-if os.getenv("EC2_VALIDATE_PYDANTIC", "").lower() in {"1", "true", "yes"}:
-    try:
-        from .generated import ec2_shapes as EC2_SHAPES
-    except ImportError:
-        EC2_SHAPES = None
 from .models import (
     DhcpOptions,
     EgressOnlyInternetGateway,
@@ -50,6 +46,13 @@ from .models import (
     VpnConnection,
     VpnGateway,
 )
+
+EC2_SHAPES = None
+if os.getenv("EC2_VALIDATE_PYDANTIC", "").lower() in {"1", "true", "yes"}:
+    try:
+        from .generated import ec2_shapes as EC2_SHAPES
+    except ImportError:
+        EC2_SHAPES = None
 
 NAMESPACE = "http://ec2.amazonaws.com/doc/2016-11-15/"
 
@@ -1045,23 +1048,15 @@ def _describe_vpcs(session: Session, params: Dict[str, str]) -> Response:
         if not values:
             continue
         if name == "cidr-block-association.association-id":
-            assoc_ids = (
-                session.query(VpcCidrBlockAssociation.vpc_id)
-                .filter(
-                    VpcCidrBlockAssociation.id.in_(values),
-                    VpcCidrBlockAssociation.is_ipv6.is_(False),
-                )
-                .subquery()
+            assoc_ids = select(VpcCidrBlockAssociation.vpc_id).where(
+                VpcCidrBlockAssociation.id.in_(values),
+                VpcCidrBlockAssociation.is_ipv6.is_(False),
             )
             query = query.filter(Vpc.id.in_(assoc_ids))
         elif name == "ipv6-cidr-block-association.association-id":
-            assoc_ids = (
-                session.query(VpcCidrBlockAssociation.vpc_id)
-                .filter(
-                    VpcCidrBlockAssociation.id.in_(values),
-                    VpcCidrBlockAssociation.is_ipv6.is_(True),
-                )
-                .subquery()
+            assoc_ids = select(VpcCidrBlockAssociation.vpc_id).where(
+                VpcCidrBlockAssociation.id.in_(values),
+                VpcCidrBlockAssociation.is_ipv6.is_(True),
             )
             query = query.filter(Vpc.id.in_(assoc_ids))
     vpcs = query.all()
@@ -1227,7 +1222,7 @@ def _modify_vpc_attribute(session: Session, params: Dict[str, str]) -> Response:
     return _xml_response(root)
 
 
-def _create_subnet(session: Session, params: Dict[str, str]) -> Response:
+def _create_subnet(session: Session, params: Dict[str, str]) -> Response:  # pylint: disable=too-many-locals
     """Handle CreateSubnet."""
     vpc_id = params.get("VpcId")
     cidr = params.get("CidrBlock")
@@ -1292,8 +1287,8 @@ def _create_subnet(session: Session, params: Dict[str, str]) -> Response:
                 route_table_id=main_assoc.route_table_id,
                 subnet_id=subnet.id,
                 main=False,
+            )
         )
-    )
     _apply_tags(session, subnet.id, _tags_for_resource(tag_specs, "subnet"))
     session.commit()
 
@@ -1419,7 +1414,9 @@ def _delete_network_acl(session: Session, params: Dict[str, str]) -> Response:
     return _xml_response(root)
 
 
-def _create_network_acl_entry(session: Session, params: Dict[str, str]) -> Response:
+def _create_network_acl_entry(  # pylint: disable=too-many-locals
+    session: Session, params: Dict[str, str]
+) -> Response:
     """Handle CreateNetworkAclEntry."""
     acl_id = params.get("NetworkAclId")
     rule_number = params.get("RuleNumber")
@@ -1472,7 +1469,9 @@ def _create_network_acl_entry(session: Session, params: Dict[str, str]) -> Respo
     return _xml_response(root)
 
 
-def _replace_network_acl_entry(session: Session, params: Dict[str, str]) -> Response:
+def _replace_network_acl_entry(  # pylint: disable=too-many-locals
+    session: Session, params: Dict[str, str]
+) -> Response:
     """Handle ReplaceNetworkAclEntry."""
     acl_id = params.get("NetworkAclId")
     rule_number = params.get("RuleNumber")
@@ -2970,11 +2969,11 @@ def _describe_security_groups(session: Session, params: Dict[str, str]) -> Respo
         values = flt.get("values", [])
         if not values:
             continue
-        if name in {"group-name", "group-name"}:
+        if name == "group-name":
             query = query.filter(SecurityGroup.name.in_(values))
         elif name == "vpc-id":
             query = query.filter(SecurityGroup.vpc_id.in_(values))
-        elif name in {"group-id", "group-id"}:
+        elif name == "group-id":
             query = query.filter(SecurityGroup.id.in_(values))
     groups = query.all()
 
