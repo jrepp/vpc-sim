@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from .db import SessionLocal
 from .models import Route, RouteTable, RouteTableAssociation, Subnet, Vpc, VpcPeeringConnection
 from .serializers import route_summary
+from .tracing import trace_span
 
 router = APIRouter(prefix="/validate")
 
@@ -134,39 +135,46 @@ def validate_connectivity(payload: ConnectivityRequest) -> dict:
     if not payload.source_subnet_id and not payload.source_vpc_id:
         raise HTTPException(status_code=400, detail="source_subnet_id or source_vpc_id is required")
 
-    with SessionLocal() as session:
-        subnet, vpc = _resolve_source(session, payload)
-        route_table = _resolve_route_table(session, subnet)
-        matched_route = _find_best_route(route_table, payload.destination_cidr) if route_table else None
-        result = {
-            "source": {
-                "subnet_id": subnet.id if subnet else None,
-                "vpc_id": vpc.id if vpc else None,
-            },
-            "destination_cidr": payload.destination_cidr,
-            "route_table_id": route_table.id if route_table else None,
-            "matched_route": None,
-            "reachable": False,
-            "warnings": [],
-        }
-
-        if not route_table:
-            result["warnings"].append("No route table associated with subnet")
-        elif not matched_route:
-            result["warnings"].append("No matching route found")
-        else:
-            result["matched_route"] = route_summary(matched_route)
-            if matched_route.target_type == "igw":
-                result["reachable"] = True
-                if not vpc:
-                    result["warnings"].append("VPC not resolved for IGW validation")
-            elif matched_route.target_type == "pcx":
-                reachable, warnings = _validate_peering(
-                    session, route_table, matched_route, payload.destination_cidr
+    with trace_span("validate.connectivity"):
+        with SessionLocal() as session:
+            with trace_span("validate.resolve_source"):
+                subnet, vpc = _resolve_source(session, payload)
+            with trace_span("validate.resolve_route_table"):
+                route_table = _resolve_route_table(session, subnet)
+            with trace_span("validate.match_route"):
+                matched_route = (
+                    _find_best_route(route_table, payload.destination_cidr) if route_table else None
                 )
-                result["reachable"] = reachable
-                result["warnings"].extend(warnings)
-            else:
-                result["warnings"].append("Target type not supported for reachability")
+            result = {
+                "source": {
+                    "subnet_id": subnet.id if subnet else None,
+                    "vpc_id": vpc.id if vpc else None,
+                },
+                "destination_cidr": payload.destination_cidr,
+                "route_table_id": route_table.id if route_table else None,
+                "matched_route": None,
+                "reachable": False,
+                "warnings": [],
+            }
 
-        return result
+            if not route_table:
+                result["warnings"].append("No route table associated with subnet")
+            elif not matched_route:
+                result["warnings"].append("No matching route found")
+            else:
+                result["matched_route"] = route_summary(matched_route)
+                if matched_route.target_type == "igw":
+                    result["reachable"] = True
+                    if not vpc:
+                        result["warnings"].append("VPC not resolved for IGW validation")
+                elif matched_route.target_type == "pcx":
+                    with trace_span("validate.peering"):
+                        reachable, warnings = _validate_peering(
+                            session, route_table, matched_route, payload.destination_cidr
+                        )
+                    result["reachable"] = reachable
+                    result["warnings"].extend(warnings)
+                else:
+                    result["warnings"].append("Target type not supported for reachability")
+
+            return result

@@ -65,7 +65,9 @@ frontend_port := "5179"
 
 @test:
 	just backend-dev-tools
-	cd {{backend_dir}} && .venv/bin/pytest -n auto -vv -ra -s --durations=15 --durations-min=0.1
+	cd {{backend_dir}} && DATABASE_URL=sqlite:///./.test.db .venv/bin/pytest -n auto -vv -ra -s --durations=15 --durations-min=0.1
+	@echo "\nAPI trace p95 (ms) from sqlite:"
+	@{{backend_dir}}/.venv/bin/python {{backend_dir}}/scripts/trace_report.py
 
 @test-backend:
 	just test

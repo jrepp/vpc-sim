@@ -13,6 +13,7 @@ from typing import Dict, Iterator, List
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, Field
 
+from .tracing import trace_span
 router = APIRouter(prefix="/terraform")
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
@@ -79,8 +80,9 @@ def _run_command(cmd: List[str], cwd: Path, env: Dict[str, str]) -> Dict[str, st
 @router.get("/profiles")
 def list_profiles() -> Dict[str, List[str]]:
     """List available Terraform profiles."""
-    profiles = _discover_profiles()
-    return {"profiles": [profile.name for profile in profiles]}
+    with trace_span("terraform.list_profiles"):
+        profiles = _discover_profiles()
+        return {"profiles": [profile.name for profile in profiles]}
 
 
 @contextmanager
@@ -100,7 +102,8 @@ def run_terraform(payload: TerraformRunRequest, request: Request) -> Dict[str, o
     if not shutil.which("terraform"):
         raise HTTPException(status_code=500, detail="terraform binary not found in PATH")
 
-    profiles = {profile.name: profile for profile in _discover_profiles()}
+    with trace_span("terraform.discover_profiles"):
+        profiles = {profile.name: profile for profile in _discover_profiles()}
     profile_dir = profiles.get(payload.profile)
     if not profile_dir:
         raise HTTPException(status_code=404, detail="Terraform profile not found")
@@ -110,8 +113,9 @@ def run_terraform(payload: TerraformRunRequest, request: Request) -> Dict[str, o
         raise HTTPException(status_code=400, detail="Invalid step")
 
     with _acquire_runner_lock():
-        base_url = os.getenv("SIM_BASE_URL") or str(request.base_url).rstrip("/")
-        env = _base_env(base_url)
+        with trace_span("terraform.build_env"):
+            base_url = os.getenv("SIM_BASE_URL") or str(request.base_url).rstrip("/")
+            env = _base_env(base_url)
 
         steps: List[Dict[str, object]] = []
         commands = []
@@ -132,7 +136,8 @@ def run_terraform(payload: TerraformRunRequest, request: Request) -> Dict[str, o
         start = time.time()
         success = True
         for name, cmd in commands:
-            result = _run_command(cmd, profile_dir, env)
+            with trace_span(f"terraform.{name}"):
+                result = _run_command(cmd, profile_dir, env)
             steps.append({"step": name, **result})
             if result["exit_code"] != 0:
                 success = False

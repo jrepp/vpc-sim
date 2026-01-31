@@ -23,7 +23,16 @@ def _free_port() -> int:
 def sim_server(tmp_path_factory: pytest.TempPathFactory) -> Generator[SimServerInfo, None, None]:
     port = _free_port()
     base_url = f"http://127.0.0.1:{port}"
-    db_path = tmp_path_factory.mktemp("db") / "test.db"
+    db_url = os.getenv("DATABASE_URL")
+    if db_url:
+        db_path = Path(db_url.replace("sqlite:///", ""))
+        worker = os.getenv("PYTEST_XDIST_WORKER")
+        if worker and worker != "master":
+            db_path = db_path.with_name(f"{db_path.stem}-{worker}{db_path.suffix}")
+        db_path.parent.mkdir(parents=True, exist_ok=True)
+        db_path = db_path.resolve()
+    else:
+        db_path = tmp_path_factory.mktemp("db") / "test.db"
     env = os.environ.copy()
     env["DATABASE_URL"] = f"sqlite:///{db_path}"
     env["PYTHONPATH"] = str(Path(__file__).resolve().parents[1])

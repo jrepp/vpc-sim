@@ -46,6 +46,7 @@ from .models import (
     VpnConnection,
     VpnGateway,
 )
+from .tracing import trace_span
 
 EC2_SHAPES = None
 if os.getenv("EC2_VALIDATE_PYDANTIC", "").lower() in {"1", "true", "yes"}:
@@ -864,10 +865,12 @@ def _parse_ip_permissions(params: Dict[str, str], prefix: str) -> list[dict]:
 async def ec2_entry(request: Request) -> Response:
     """Single EC2 Query entrypoint."""
     form = None
-    if request.method == "POST":
-        form_data = await request.form()
-        form = {k: str(v) for k, v in form_data.items()}
-    params = _parse_params(request, form)
+    with trace_span("ec2.parse_request"):
+        if request.method == "POST":
+            form_data = await request.form()
+            form = {k: str(v) for k, v in form_data.items()}
+    with trace_span("ec2.parse_params"):
+        params = _parse_params(request, form)
     action = params.get("Action")
     if not action:
         return _xml_error("MissingAction", "Action parameter is required")
@@ -879,26 +882,31 @@ async def ec2_entry(request: Request) -> Response:
         handler = _ACTIONS.get(action)
         if not handler:
             return _xml_error("InvalidAction", f"Unsupported action: {action}")
-        missing = validate_required_params(action, params)
+        with trace_span("ec2.validate_required"):
+            missing = validate_required_params(action, params)
         if missing:
             return _xml_error(
                 "MissingParameter",
                 f"Missing required parameter(s): {', '.join(missing)}",
             )
-        invalid = validate_params(action, params)
+        with trace_span("ec2.validate_params"):
+            invalid = validate_params(action, params)
         if invalid:
             return _xml_error("InvalidParameterValue", "; ".join(invalid))
 
         if EC2_SHAPES:
-            input_data = parse_action_input(action, params)
-            model_name = get_input_shape_name(action)
+            with trace_span("ec2.parse_shape_input"):
+                input_data = parse_action_input(action, params)
+                model_name = get_input_shape_name(action)
             if model_name and hasattr(EC2_SHAPES, model_name):
                 model = getattr(EC2_SHAPES, model_name)
                 try:
-                    model(**input_data)
+                    with trace_span("ec2.validate_shape"):
+                        model(**input_data)
                 except ValidationError as exc:
                     return _xml_error("InvalidParameterValue", str(exc.errors()))
-        return handler(session, params)
+        with trace_span(f"ec2.action.{action}"):
+            return handler(session, params)
 
 
 def _create_vpc(session: Session, params: Dict[str, str]) -> Response:
