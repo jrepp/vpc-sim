@@ -46,6 +46,15 @@ class Tracer(Protocol):
         """Record a span under a trace."""
         raise NotImplementedError
 
+    def set_trace_metadata(
+        self,
+        trace_id: str,
+        action: Optional[str],
+        namespace: Optional[str],
+    ) -> None:
+        """Update trace metadata fields."""
+        raise NotImplementedError
+
 
 def _utc_now() -> datetime:
     return datetime.now(timezone.utc)
@@ -102,6 +111,24 @@ class SqliteTracer:
             )
             session.commit()
 
+    def set_trace_metadata(
+        self,
+        trace_id: str,
+        action: Optional[str],
+        namespace: Optional[str],
+    ) -> None:
+        """Update action/namespace for a trace row."""
+        if action is None and namespace is None:
+            return
+        with SessionLocal() as session:
+            record = session.get(ApiTrace, trace_id)
+            if record:
+                if action is not None:
+                    record.action = action
+                if namespace is not None:
+                    record.namespace = namespace
+            session.commit()
+
 
 _current_trace_id: contextvars.ContextVar[Optional[str]] = contextvars.ContextVar(
     "trace_id", default=None
@@ -117,6 +144,11 @@ _current_tracer: contextvars.ContextVar[Optional[Tracer]] = contextvars.ContextV
 def get_tracer(request: Request) -> Optional[Tracer]:
     """FastAPI dependency to access the active tracer."""
     return getattr(request.app.state, "tracer", None)
+
+
+def get_current_trace_id() -> Optional[str]:
+    """Return the current request trace id, if any."""
+    return _current_trace_id.get()
 
 
 @contextmanager

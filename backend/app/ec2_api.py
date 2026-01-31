@@ -46,7 +46,7 @@ from .models import (
     VpnConnection,
     VpnGateway,
 )
-from .tracing import trace_span
+from .tracing import get_current_trace_id, get_tracer, trace_span
 
 EC2_SHAPES = None
 if os.getenv("EC2_VALIDATE_PYDANTIC", "").lower() in {"1", "true", "yes"}:
@@ -257,6 +257,51 @@ def _parse_tag_specifications(params: Dict[str, str]) -> list[dict]:
         specs.append({"resource_type": resource_type, "tags": tags})
         spec_index += 1
     return specs
+
+
+def _extract_test_namespace(params: Dict[str, str]) -> str | None:
+    """Best-effort extraction of TestNamespace from tags or filters."""
+    for tag in _parse_tags(params):
+        if tag.get("key") == "TestNamespace":
+            return tag.get("value")
+    for spec in _parse_tag_specifications(params):
+        for tag in spec.get("tags", []):
+            if tag.get("key") == "TestNamespace":
+                return tag.get("value")
+    for flt in _get_filter_params(params):
+        if flt.get("name") == "tag:TestNamespace":
+            values = flt.get("values", [])
+            if values:
+                return values[0]
+    return None
+
+
+def _extract_resource_ids(params: Dict[str, str]) -> set[str]:
+    """Extract resource ids from params for namespace inference."""
+    ids: set[str] = set()
+    for key, value in params.items():
+        if not isinstance(value, str):
+            continue
+        if key.endswith("Id") or ".Id" in key:
+            ids.add(value)
+    return ids
+
+
+def _infer_namespace(session: Session, params: Dict[str, str]) -> str | None:
+    """Infer TestNamespace by looking up tags for referenced resources."""
+    resource_ids = _extract_resource_ids(params)
+    if not resource_ids:
+        return None
+    row = (
+        session.query(Tag.value)
+        .filter(
+            Tag.key == "TestNamespace",
+            Tag.resource_id.in_(resource_ids),
+        )
+        .order_by(Tag.value.asc())
+        .first()
+    )
+    return row[0] if row else None
 
 
 def _tags_for_resource(tag_specs: list[dict], resource_type: str) -> list[dict]:
@@ -862,7 +907,7 @@ def _parse_ip_permissions(params: Dict[str, str], prefix: str) -> list[dict]:
 
 
 @router.api_route("/", methods=["GET", "POST"])
-async def ec2_entry(request: Request) -> Response:
+async def ec2_entry(request: Request) -> Response:  # pylint: disable=too-many-locals
     """Single EC2 Query entrypoint."""
     form = None
     with trace_span("ec2.parse_request"):
@@ -882,6 +927,11 @@ async def ec2_entry(request: Request) -> Response:
         handler = _ACTIONS.get(action)
         if not handler:
             return _xml_error("InvalidAction", f"Unsupported action: {action}")
+        trace_id = get_current_trace_id()
+        tracer = get_tracer(request)
+        if trace_id and tracer:
+            namespace = _extract_test_namespace(params) or _infer_namespace(session, params)
+            tracer.set_trace_metadata(trace_id, action=action, namespace=namespace)
         with trace_span("ec2.validate_required"):
             missing = validate_required_params(action, params)
         if missing:

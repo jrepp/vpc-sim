@@ -37,6 +37,8 @@ def ensure_schema() -> None:
             ("subnets", "ipv6_cidr_block"),
             ("subnets", "ipv6_association_id"),
             ("subnets", "assign_ipv6_address_on_creation"),
+            ("api_traces", "action"),
+            ("api_traces", "namespace"),
         ]:
             info = conn.execute(text(f"PRAGMA table_info({table})")).fetchall()
             if not any(row[1] == column for row in info):

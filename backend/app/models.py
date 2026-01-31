@@ -449,6 +449,8 @@ class ApiTrace(Base):
     id: Mapped[str] = mapped_column(String, primary_key=True)
     method: Mapped[str] = mapped_column(String, nullable=False)
     path: Mapped[str] = mapped_column(String, nullable=False)
+    action: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    namespace: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     status_code: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     duration_ms: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
     started_at: Mapped[datetime] = mapped_column(
