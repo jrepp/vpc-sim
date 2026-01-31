@@ -11,10 +11,15 @@ from fastapi.staticfiles import StaticFiles
 from . import ec2_api, state_api, terraform_api, validation
 from .db import engine, ensure_schema
 from .models import Base
+from .tracing import SqliteTracer, TraceMiddleware
 
 app = FastAPI(title="VPC Sim", version="0.1.0")
 
 FRONTEND_DIST = Path(__file__).resolve().parents[2] / "frontend" / "dist"
+
+tracer = SqliteTracer()
+app.state.tracer = tracer
+app.add_middleware(TraceMiddleware, tracer=tracer)
 
 app.add_middleware(
     CORSMiddleware,

@@ -4,7 +4,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import List, Optional
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String
+from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -439,3 +439,43 @@ class VpcEndpointConnectionNotification(Base):
     connection_notification_type: Mapped[str] = mapped_column(String, nullable=False, default="Topic")
     connection_notification_state: Mapped[str] = mapped_column(String, nullable=False, default="Enabled")
     connection_events_json: Mapped[str] = mapped_column(String, nullable=False, default="[]")
+
+
+class ApiTrace(Base):
+    """Request trace entry."""
+
+    __tablename__ = "api_traces"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    method: Mapped[str] = mapped_column(String, nullable=False)
+    path: Mapped[str] = mapped_column(String, nullable=False)
+    status_code: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    duration_ms: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    started_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+    spans: Mapped[List["ApiSpan"]] = relationship(
+        "ApiSpan", back_populates="trace", cascade="all, delete-orphan"
+    )
+
+
+class ApiSpan(Base):
+    """Nested span recorded under a trace."""
+
+    __tablename__ = "api_spans"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    trace_id: Mapped[str] = mapped_column(String, ForeignKey("api_traces.id"), nullable=False)
+    parent_span_id: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    duration_ms: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    started_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        nullable=False,
+        default=lambda: datetime.now(timezone.utc),
+    )
+
+    trace: Mapped["ApiTrace"] = relationship("ApiTrace", back_populates="spans")
